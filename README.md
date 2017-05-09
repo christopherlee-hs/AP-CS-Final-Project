@@ -1,1 +1,2 @@
-# AP-CS-Final-Project
+# AP CS Final Project
+Christopher Lee and Prasheil Mandava
