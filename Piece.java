@@ -16,26 +16,27 @@ public class Piece {
 		y = uY;
 	}
 	public boolean canMoveTo(int uX, int uY) {
-		if (Board.squares[uX][uY].getPiece() != null)
+		if (Board.squares[uY][uX].getPiece() != null)
 			return false;
-		if (Math.abs(uX-x) == 1 && Math.abs(uY-y) == 1){
-			if (uX-x == 1)
+		if (Math.abs(uX-x) == 1 && Math.abs(uY-y) == 1) {
+			if ((uY-y == 1 && player == 1) || (uY-y == -1 && player == 0))
 				return true;
 			else if (king)
 				return true;
 		}
 		if (Math.abs(uX-x) == 2 && Math.abs(uY-y) == 2) {
-			if (uX-x == 2) {
-				Square curr = Board.squares[x+1][(uY+y)/2];
-				if (curr == null)
+			if ((uY-y == 2 && player == 1) || (uY-y == -2 && player == 0)) {
+				Square curr = Board.squares[(uY+y)/2][(uX+x)/2];
+				if (curr.getPiece() == null)
 					return false;
-				else 
+				else {
 					return curr.getPiece().player != this.player;
+				}
 			}
 			else {
 				if (!king)
 					return false;
-				Square curr = Board.squares[x-1][(uY+y)/2];
+				Square curr = Board.squares[(uY+y)/2][(uX+x)/2];
 				if (curr == null)
 					return false;
 				else
@@ -46,7 +47,9 @@ public class Piece {
 	}
 	
 	public String toString() {
-		return player + " " + x + " " + y + "\n";
+		if (player == 0)
+			return "x";
+		return "o";
 	}
 
 }
