@@ -11,6 +11,7 @@ public class Game { // x is vertical, y is horizontal
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(board);
+		frame.setResizable(false);
 		frame.pack();
 		
 		players = new Player[2];
@@ -18,12 +19,6 @@ public class Game { // x is vertical, y is horizontal
 		players[1] = new Player(1);
 		
 		//move(players[0].pieces.get(9), 2, 4);
-		
-	}
-	
-	
-	
-	public void playerTurn(int playerNum) {
 		
 	}
 	
