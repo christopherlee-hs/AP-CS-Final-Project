@@ -3,7 +3,8 @@ import java.awt.Insets;
 
 import javax.swing.*;
 
-public class Square extends JButton {
+@SuppressWarnings("serial")
+public class Square extends JButton { // each square is an JButton to inherit its properties plus add coordinates and a piece
 	protected int x;
 	protected int y;
 	protected Piece p;
@@ -12,31 +13,35 @@ public class Square extends JButton {
 		super();
 		x = uX;
 		y = uY;
-		this.setBounds(x*Board.TILE_SIZE, y*Board.TILE_SIZE+100, Board.TILE_SIZE, Board.TILE_SIZE);
-		if ((x+y) % 2 == 1)
+		this.setBounds(x*Board.tileSize, y*Board.tileSize+Board.topGap, Board.tileSize, Board.tileSize);
+		// squares form 400x400 grid in bottom left corner
+		if ((x+y) % 2 == 1) // make checker board pattern
 			this.setBackground(Color.RED);
 		else
-			this.setBackground(Color.WHITE);
+			this.setBackground(Color.BLACK);
+		
 		this.setEnabled(false);
 		this.setMargin(new Insets(0, 0, 0, 0));
 	}
 	
 	public void setPiece(Piece other) {
-		this.setEnabled(other != null);
+		this.setEnabled(other != null); // if there is no piece on the square, it should be disabled; otherwise enabled
 		p = other;
+		this.setHorizontalAlignment(SwingConstants.CENTER);
 		if (p != null)
-			this.setText(p.toString());
+			this.setIcon(p.getIcon());
 		else
-			this.setText("");
+			this.setIcon(null);
 	}
 	
 	public Piece getPiece() {
 		return p;
 	}
 	
-	public String toString() {
+	public Icon getIcon() {
 		if (p == null)
-			return ".";
-		return p.toString();
+			return null;
+		else
+			return p.getIcon();
 	}
 }

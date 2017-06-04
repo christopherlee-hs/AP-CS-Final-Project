@@ -1,24 +1,32 @@
-import javax.swing.JFrame;
+import java.awt.*;
+import javax.swing.*;
 
-public class Game { // x is vertical, y is horizontal
+public class Game {
 	protected static Player[] players;
 	protected Board board;
 	protected static int click;
+	protected static int width;
+	protected static int height;
+	public final static double SCALE_WIDTH = 600.0/1366;
+	public final static double ASPECT_RATIO = 5.0/6;
 	
-	public Game() {
-		board = new Board();
+	public Game() { // sets everything up, runs the program
+		Rectangle r = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
+		width = (int) (r.getWidth() * SCALE_WIDTH);
+		height = (int) (ASPECT_RATIO * width);
+		board = new Board(width, height);
 		JFrame frame = new JFrame();
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.add(board);
-		frame.setResizable(false);
 		frame.pack();
-		
+		frame.setResizable(false);
+		double screenWidth = r.getWidth();
+		double screenHeight = r.getHeight();
+		frame.setLocation((int) ((screenWidth - width) / 2), (int) ((screenHeight - height) / 2));
 		players = new Player[2];
 		players[0] = new Player(0);
 		players[1] = new Player(1);
-		
-		//move(players[0].pieces.get(9), 2, 4);
 		
 	}
 	
