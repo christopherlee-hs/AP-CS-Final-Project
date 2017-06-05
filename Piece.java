@@ -68,7 +68,7 @@ public class Piece implements Comparable<Piece> { // Each game piece with variab
 		return canJumpTo(x-2, y-2) || canJumpTo(x+2, y-2) || canJumpTo(x-2, y+2) || canJumpTo(x+2, y+2);
 	}
 	
-	public String toString() {
+	public String toString() { // used before getIcon() worked
 		if (king) {
 			if (player == 0)
 				return "xx";
@@ -91,7 +91,7 @@ public class Piece implements Comparable<Piece> { // Each game piece with variab
 	}
 
 	@Override
-	public int compareTo(Piece o) {
+	public int compareTo(Piece o) { // orders the pieces for the captured pieces on the side; red before black, normal before king
 		if (o.player == this.player) {
 			if (o.king)
 				return -1;

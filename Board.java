@@ -20,12 +20,12 @@ public class Board extends JPanel { // the board is the panel that contains the 
 		this.setPreferredSize(new Dimension(width, height));
 		this.setLayout(null);
 		
-		boardSize = (int) (0.8 * height);
+		boardSize = (int) (0.8 * height); // scales board size based on JFrame size
 		tileSize = boardSize / SIZE;
 		boardSize = tileSize * SIZE;
 		topGap = height - boardSize;
 		
-		text = new JLabel();
+		text = new JLabel(); // Checkers sign at the top; changes to win message
 		text.setBounds(0, 0, width, topGap);
 		text.setText("CHECKERS");
 		text.setVisible(true);
@@ -34,7 +34,7 @@ public class Board extends JPanel { // the board is the panel that contains the 
 		text.setFont(new Font("Helvetica", Font.PLAIN, (int) ((double) text.getWidth() / text.getFontMetrics(text.getFont()).stringWidth(text.getText()) * text.getFont().getSize() - 40)));
 		this.add(text);
 		
-		capturedSquares = new JLabel[23];
+		capturedSquares = new JLabel[23]; // JLabels on right side that will house the captured pieces
 		for (int i = 0; i < capturedSquares.length; i++) {
 			capturedSquares[i] = new JLabel();
 			capturedSquares[i].setBounds(boardSize+tileSize*(i%4), topGap+tileSize*(i/4), tileSize, tileSize);
@@ -42,29 +42,30 @@ public class Board extends JPanel { // the board is the panel that contains the 
 			this.add(capturedSquares[i]);
 		}
 		
-		capturedPieces = new ArrayList<Piece>();
+		capturedPieces = new ArrayList<Piece>(); // keeps track of the pieces that have been captured
 		
 		ActionListener al = new ActionListener() { // ActionListener for all the squares
 			public void actionPerformed(ActionEvent e) {
 				Square s = (Square) e.getSource();
 				if (Game.click++ == 0 || s.getPiece() != null) { // if the player is clicking their own piece
-					s.setBackground(Color.GREEN);
+					s.setBackground(Color.GREEN); // chosen square is green
 					pieceToMove = s.getPiece();
 					for (int i = 0; i < SIZE; i++) { // set all pieces to enabled/disabled based on where the piece can move
 													 // also, the player's own pieces are enabled if player changes their mind
 						for (int j = 0; j < SIZE; j++) {
+							// sets each square's color and whether it is enabled
 							boolean temp = pieceToMove.canMoveTo(j, i);
 							if (squares[i][j].getPiece() == null) {
 								squares[i][j].setEnabled(temp);
-								if (temp)
+								if (temp) // squares you can jump to are black
 									squares[i][j].setBackground(Color.YELLOW);
-								else if ((i+j)%2 == 0)
+								else if ((i+j)%2 == 0) // all of the other possible squares are black
 									squares[i][j].setBackground(Color.BLACK);
 							}
-							else {
+							else { // if the player picks another piece to move
 								squares[i][j].setEnabled(squares[i][j].getPiece().player == pieceToMove.player || temp);
 								if (temp)
-									squares[i][j].setBackground(Color.YELLOW);
+									squares[i][j].setBackground(Color.YELLOW); // rechoose the squares to be yellow
 								else if (!(j==s.x && i==s.y))
 									squares[i][j].setBackground(Color.BLACK);
 							}
@@ -76,13 +77,12 @@ public class Board extends JPanel { // the board is the panel that contains the 
 					move(pieceToMove, s.x, s.y);
 					if (!(temp && pieceToMove.canJump())) { // if no double/triple/etc. jumps are possible, change to other 
 															// player and set all of other player's pieces to enabled
-						Game.click = 0;
+						Game.click = 0; // reset the click counter
 						for (int i = 0; i < SIZE; i++) {
 							for (int j = 0; j < SIZE; j++) {
-								if (squares[i][j].getPiece() != null) {
+								if (squares[i][j].getPiece() != null) // change whose turn it is
 									squares[i][j].setEnabled(squares[i][j].getPiece().player != pieceToMove.player);
-								}
-								if ((i+j)%2 == 0)
+								if ((i+j)%2 == 0) // reset all the black squares
 									squares[i][j].setBackground(Color.BLACK);
 							}
 						}
@@ -101,7 +101,6 @@ public class Board extends JPanel { // the board is the panel that contains the 
 							}
 						}
 					}
-					// System.out.println(Game.players[0].pieces.size() + " " + Game.players[1].pieces.size());
 					// win messages
 					if (Game.players[0].hasLost()) {
 						text.setText("Black wins!");
